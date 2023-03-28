@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<query xmlns="http://n2oapp.net/framework/config/schema/query-5.0">
+    <list result-mapping="#this">
+        <sql>
+            SELECT :select
+            FROM genders
+            WHERE :filters
+            ORDER BY :sorting
+        </sql>
+    </list>
+
+    <filters>
+        <eq field-id="gender.id" filter-id="gender.id" mapping="['gen_id']">
+            gen_id = :gen_id
+        </eq>
+
+        <like field-id="gender_name" filter-id="gender_name">
+            gender_name like :gender_name
+        </like>
+    </filters>
+
+    <fields>
+        <field id="gender.id" domain="integer" mapping="['gen_id']" select-expression="gen_id"
+               sorting-expression="gen_id :gen_idDir" sorting-mapping="['gen_idDir']"/>
+
+        <field id="gender.name" select-expression="gender_name"
+               sorting-expression="gender_name :gender_nameDir" sorting-mapping="['gender_nameDir']"/>
+    </fields>
+
+</query>

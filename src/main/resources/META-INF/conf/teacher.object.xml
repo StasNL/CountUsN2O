@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<object xmlns="http://n2oapp.net/framework/config/schema/object-4.0">
+
+    <operations>
+        <operation id="create" success-text="Учитель успешно добавлен."
+                   fail-text="Что-то пошло не так">
+            <invocation>
+                <sql>INSERT INTO teachers (name, surname, patronymic, birth_year, gender_id, subject_id)
+                    VALUES (:name, :surname, :patronymic, :birth_year, :gender_id, :subject_id);
+                </sql>
+            </invocation>
+            <in>
+                <field id="name"/>
+                <field id="surname"/>
+                <field id="patronymic"/>
+                <field id="birth_year"/>
+                <field id="gender.id" mapping="['gender_id']"/>
+                <field id="subject.id" mapping="['subject_id']"/>
+            </in>
+            <out>
+                <field id="id" mapping="[0]"/>
+            </out>
+        </operation>
+
+        <operation id="delete" success-text="Данные об учителе успешно удалены.">
+            <invocation>
+                <sql>
+                    DELETE FROM teachers WHERE teach_id = :id
+                </sql>
+            </invocation>
+            <in>
+                <field id="id"/>
+            </in>
+        </operation>
+
+        <operation id="add_to_class" success-text="Учитель добавлен в класс">
+            <invocation>
+                <sql>
+                    UPDATE teachers
+                    SET class_id = :class_id
+                    WHERE teach_id = :teach_id
+                </sql>
+            </invocation>
+            <in>
+                <field id="teach_id"/>
+                <field id="class_id"/>
+            </in>
+        </operation>
+
+        <operation id="delete_from_class" success-text="Учитель удалён из класса">
+            <invocation>
+                <sql>
+                    UPDATE teachers SET class_id = null
+                    WHERE class_id = :class_id
+                </sql>
+            </invocation>
+            <in>
+                <field id="class_id" param="class_id"/>
+            </in>
+        </operation>
+    </operations>
+</object>

@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<simple-page xmlns="http://n2oapp.net/framework/config/schema/page-4.0">
+    <form>
+        <datasource query-id="teacher">
+            <filters>
+                <eq field-id="id" param="id"/>
+                <eq field-id="class_id" param="class_id"/>
+            </filters>
+        </datasource>
+        <fields>
+            <input-text id="surname" label="Фамилия" required="true" length="32" enabled="{class_id == null}"/>
+            <input-text id="name" label="Имя" required="true" length="32" enabled="{class_id == null}"/>
+            <input-text id="patronymic" label="Отчество" required="true" length="32" enabled="{class_id == null}"/>
+            <input-text id="birth_year" label="Год рождения" required="true" domain="integer"
+                        min="1920" max="2023" placeholder="2000" enabled="{class_id == null}"/>
+
+            <radio-group id="gender" label="Пол" inline="true" required="true"
+                         enabled="{class_id == null}">
+                <options>
+                    <option id="1" name="Мужской"/>
+                    <option id="2" name="Женский"/>
+                </options>
+            </radio-group>
+
+            <select id="subject" label="Основной предмет" required="true" enabled="{class_id == null}">
+                <options>
+                    <option id="1" name="Математика"/>
+                    <option id="2" name="Русский язык"/>
+                    <option id="3" name="Литература"/>
+                    <option id="4" name="География"/>
+                    <option id="5" name="Биология"/>
+                </options>
+            </select>
+        </fields>
+    </form>
+</simple-page>

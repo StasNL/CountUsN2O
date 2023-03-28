@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<simple-page xmlns="http://n2oapp.net/framework/config/schema/page-4.0">
+    <form>
+        <datasource query-id="student">
+            <filters>
+                <eq field-id="id" param="id"/>
+            </filters>
+        </datasource>
+        <fields>
+            <input-text id="surname" label="Фамилия" required="true" length="32"/>
+            <input-text id="name" label="Имя" required="true" length="32"/>
+            <input-text id="patronymic" label="Отчество" required="true" length="32"/>
+            <input-text id="birth_year" label="Год рождения" required="true" domain="integer"
+                        min="2000" max="2023" placeholder="2000"/>
+
+            <radio-group id="gender" label="Пол" inline="true" required="true">
+                <options>
+                    <option id="1" name="Мужской"/>
+                    <option id="2" name="Женский"/>
+                </options>
+                <default-value id="1" name="Мужской"/>
+            </radio-group>
+        </fields>
+    </form>
+
+</simple-page>

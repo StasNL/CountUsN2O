@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<page xmlns="http://n2oapp.net/framework/config/schema/page-4.0"
+      name="Список классов" route="/classes">
+    <datasources>
+        <datasource id="class1" query-id="clazz" object-id="clazz"/>
+    </datasources>
+
+    <regions>
+        <region>
+            <table name="Список классов школы" datasource="class1">
+                <columns>
+                    <filter-column text-field-id="study_year">
+                        <filter>
+                            <input-text id="study_year"/>
+                        </filter>
+                    </filter-column>
+
+                    <filter-column text-field-id="mnemocode">
+                        <filter>
+                            <input-text id="mnemocode"/>
+                        </filter>
+                    </filter-column>
+
+                    <column label="Классный руководитель">
+                        <toolbar>
+                            <button label="Показать">
+                                <show-modal page-id="add_teacher" modal-size="sm" submit-operation-id="delete_from_class"
+                                            submit-label="Удалить из класса">
+                                    <params>
+                                        <query-param name="class_id" value="{id}" model="resolve" datasource="class1"/>
+                                    </params>
+                                </show-modal>
+                            </button>
+                        </toolbar>
+                    </column>
+
+                    <column label="Список класса">
+                        <toolbar>
+                            <button label="Показать" disable-on-empty-model="false">
+                                <open-page page-id="student">
+                                    <params>
+                                        <query-param name="classId" value="{id}" model="resolve" datasource="class1"/>
+                                    </params>
+                                </open-page>
+                            </button>
+                        </toolbar>
+                    </column>
+                    <column>
+                        <toolbar>
+                            <sub-menu label="Меню">
+                                <menu-item label="Размножить">
+                                    <show-modal page-id="add_clazz" submit-operation-id="create"
+                                                submit-label="Принять" modal-size="sm">
+                                        <params>
+                                            <query-param name="id" value="{id}" datasource="class1"/>
+                                        </params>
+                                    </show-modal>
+                                </menu-item>
+                                <menu-item label="Удалить">
+                                    <invoke operation-id="delete"/>
+                                </menu-item>
+                                <menu-item label="Добавить учителя">
+                                    <show-modal page-id="teacher">
+                                        <datasources>
+                                            <datasource id="class1"/>
+                                        </datasources>
+                                    </show-modal>
+                                </menu-item>
+                                <menu-item label="Добавить ученика">
+                                    <show-modal page-id="student">
+                                        <datasources>
+                                            <datasource id="class1"/>
+                                        </datasources>
+                                        <params>
+                                            <query-param name="anticlassId" value="{id}"/>
+                                        </params>
+                                    </show-modal>
+                                </menu-item>
+                            </sub-menu>
+                        </toolbar>
+                    </column>
+                </columns>
+                <toolbar>
+                    <button label="Добавить класс" disable-on-empty-model="false">
+                        <show-modal page-id="add_clazz" submit-operation-id="create"
+                                    submit-label="Принять" modal-size="sm" object-id="clazz">
+                            <params>
+                                <query-param name="id" value="0" datasource="class1"/>
+                            </params>
+                        </show-modal>
+                    </button>
+                </toolbar>
+            </table>
+        </region>
+    </regions>
+</page>

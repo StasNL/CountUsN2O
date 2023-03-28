@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<query xmlns="http://n2oapp.net/framework/config/schema/query-5.0"
+       object-id="clazz">
+
+    <list result-mapping="#this">
+        <sql>
+            SELECT :select
+            FROM classes c
+            LEFT JOIN teachers t ON c.cl_id = t.class_id
+            WHERE :filters
+            ORDER BY :sorting
+        </sql>
+    </list>
+
+    <filters>
+        <eq field-id="id" filter-id="id" mapping="['cl_id']">
+            cl_id = :cl_id
+        </eq>
+        <eq field-id="study_year" filter-id="study_year">
+            study_year = :study_year
+        </eq>
+        <like field-id="mnemocode" filter-id="mnemocode">
+            mnemocode ilike '%'||:mnemocode||'%'
+        </like>
+
+    </filters>
+
+    <fields>
+        <field id="id" mapping="['cl_id']" domain="integer" select-expression="cl_id"/>
+
+        <field id="study_year" name="Год обучения" domain="integer" select-expression="study_year"
+               sorting-expression="study_year :study_yearDir" sorting-mapping="['study_yearDir']"/>
+
+        <field id="mnemocode" name="Мнемокод" select-expression="mnemocode"
+               sorting-expression="mnemocode :mnemocodeDir" sorting-mapping="['mnemocodeDir']"/>
+    </fields>
+
+</query>

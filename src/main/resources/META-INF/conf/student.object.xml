@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<object xmlns="http://n2oapp.net/framework/config/schema/object-4.0">
+
+    <operations>
+        <operation id="create" success-text="Ученик успешно добавлен."
+                   fail-text="Что-то пошло не так">
+            <invocation>
+                <sql>INSERT INTO students (name, surname, patronymic, birth_year, gender_id)
+                    VALUES (:name, :surname, :patronymic, :birth_year, :gender_id);
+                </sql>
+            </invocation>
+            <in>
+                <field id="name"/>
+                <field id="surname"/>
+                <field id="patronymic"/>
+                <field id="birth_year"/>
+                <field id="gender.id" mapping="['gender_id']"/>
+            </in>
+            <out>
+                <field id="id" mapping="[0]"/>
+            </out>
+        </operation>
+
+        <operation id="delete" success-text="Данные об ученике успешно удалены.">
+            <invocation>
+                <sql>
+                    DELETE FROM students WHERE st_id = :id
+                </sql>
+            </invocation>
+            <in>
+                <field id="id"/>
+            </in>
+        </operation>
+
+        <operation id="add_to_class" success-text="Ученик добавлен в класс">
+            <invocation>
+                <sql>
+                    UPDATE students
+                    SET class_id = :class_id
+                    WHERE st_id = :st_id
+                </sql>
+            </invocation>
+            <in>
+                <field id="st_id"/>
+                <field id="class_id"/>
+            </in>
+        </operation>
+
+        <operation id="delete_from_class" success-text="Ученик удалён из класса">
+            <invocation>
+                <sql>
+                    UPDATE students SET class_id = null
+                    WHERE st_id = :st_id
+                </sql>
+            </invocation>
+            <in>
+                <field id="id" mapping="['st_id']"/>
+            </in>
+        </operation>
+    </operations>
+</object>

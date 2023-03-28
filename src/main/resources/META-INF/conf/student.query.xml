@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<query xmlns="http://n2oapp.net/framework/config/schema/query-5.0"
+       object-id="student">
+
+    <list result-mapping="#this">
+        <sql>
+            SELECT :select
+            FROM students s
+            LEFT JOIN genders AS g ON s.gender_id = g.gen_id
+            WHERE :filters
+            ORDER BY :sorting
+        </sql>
+    </list>
+
+    <filters>
+        <eq field-id="id" filter-id="id">
+            st_id = :id
+        </eq>
+        <like field-id="surname" filter-id="surname">
+            surname ilike '%'||:surname||'%'
+        </like>
+        <like field-id="name" filter-id="name">
+            name ilike '%'||:name||'%'
+        </like>
+        <like field-id="patronymic" filter-id="patronymic">
+            patronymic ilike '%'||:patronymic||'%'
+        </like>
+        <eq field-id="birth_year" filter-id="birth_year">
+            birth_year = :birth_year
+        </eq>
+
+        <eq field-id="gender" filter-id="gender.id" mapping="['gender_id']">
+            gender_id = :gender_id
+        </eq>
+
+        <like field-id="gender.name" filter-id="gender.name" mapping="['gender_name']">
+            gender_name like :gender_name
+        </like>
+
+        <eq field-id="class_id" filter-id="class_id">
+            class_id = :class_id
+        </eq>
+        <eq field-id="anticlass_id" filter-id="anticlass_id" mapping="['class_id']">
+            class_id IS NULL
+        </eq>
+    </filters>
+
+    <fields>
+        <field id="id" mapping="['st_id']" domain="integer" select-expression="st_id"/>
+
+        <field id="name" name="Имя" select-expression="name" sorting-expression="name :nameDir"
+               sorting-mapping="['nameDir']"/>
+
+        <field id="surname" name="Фамилия" select-expression="surname" sorting-expression="surname :surnameDir"
+               sorting-mapping="['surnameDir']"/>
+
+        <field id="patronymic" name="Отчество" select-expression="patronymic"
+               sorting-expression="patronymic :patronymicDir" sorting-mapping="['patronymicDir']"/>
+
+        <field id="birth_year" domain="integer" name="Год рождения" select-expression="birth_year"
+               sorting-expression="birth_year :birth_yearDir" sorting-mapping="['birth_yearDir']"/>
+
+        <field id="gender" mapping="['gender_name']" name="Пол" select-expression="gender_name"
+               sorting-expression="gender_name :gender_nameDir" sorting-mapping="['gender_nameDir']"/>
+
+        <field id="class_id" domain="integer" select-expression="class_id"/>
+
+        <field id="anticlass_id" mapping="['class_id']" domain="integer" select-expression="class_id"/>
+    </fields>
+</query>

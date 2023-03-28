@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<object xmlns="http://n2oapp.net/framework/config/schema/object-4.0">
+
+    <operations>
+        <operation id="create" success-text="Класс успешно создан">
+            <invocation>
+                <sql>
+                    INSERT INTO classes (study_year, mnemocode)
+                    VALUES (:study_year, :mnemocode)
+                </sql>
+            </invocation>
+            <in>
+                <field id="study_year"/>
+                <field id="mnemocode"/>
+            </in>
+            <out>
+                <field id="id" mapping="[0]"/>
+            </out>
+        </operation>
+
+        <operation id="delete" success-text="Класс успешно удалён">
+            <invocation>
+                <sql>
+                    DELETE FROM classes WHERE cl_id = :id
+                </sql>
+            </invocation>
+            <in>
+                <field id="id"/>
+            </in>
+        </operation>
+    </operations>
+
+</object>

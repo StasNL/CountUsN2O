@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<page xmlns="http://n2oapp.net/framework/config/schema/page-4.0"
+      name="Список учеников">
+
+    <datasources>
+        <parent-datasource id="class1"/>
+        <datasource id="student1" query-id="student" object-id="student">
+            <filters>
+                <eq field-id="class_id" param="classId"/>
+                <eq field-id="anticlass_id" param="anticlassId"/>
+            </filters>
+        </datasource>
+    </datasources>
+    <regions>
+        <region>
+            <table name="Список учеников школы." datasource="student1">
+                <columns>
+                    <filter-column text-field-id="surname">
+                        <filter>
+                            <input-text id="surname"/>
+                        </filter>
+                    </filter-column>
+                    <filter-column text-field-id="name">
+                        <filter>
+                            <input-text id="name"/>
+                        </filter>
+                    </filter-column>
+                    <filter-column text-field-id="patronymic">
+                        <filter>
+                            <input-text id="patronymic"/>
+                        </filter>
+                    </filter-column>
+                    <filter-column text-field-id="birth_year">
+                        <filter>
+                            <input-text id="birth_year" domain="integer"/>
+                        </filter>
+                    </filter-column>
+                    <filter-column text-field-id="gender" label="Пол">
+                        <filter>
+                            <radio-group id="gender" label="Пол">
+                                <options>
+                                    <option id="1" name="Мужской"/>
+                                    <option id="2" name="Женский"/>
+                                </options>
+                            </radio-group>
+                        </filter>
+                    </filter-column>
+                    <column>
+                        <toolbar>
+                            <sub-menu label="Меню">
+                                <menu-item label="Размножить" datasource="student1">
+                                    <show-modal page-id="add_student" submit-operation-id="create"
+                                                submit-label="Принять" modal-size="sm">
+                                        <params>
+                                            <query-param name="id" value="{id}"/>
+                                        </params>
+                                    </show-modal>
+                                </menu-item>
+
+                                <menu-item label="Удалить" datasource="student1">
+                                    <invoke operation-id="delete"/>
+                                </menu-item>
+
+                                <menu-item label="Добавить в класс" visible="{classId == null}">
+                                    <invoke operation-id="add_to_class" object-id="student" close-on-success="true">
+                                        <form-param id="class_id" value="{id}" datasource="class1"/>
+                                        <form-param id="st_id" datasource="student1" value="{id}"/>
+                                    </invoke>
+                                </menu-item>
+
+                                <menu-item label="Удалить из класса">
+                                    <invoke operation-id="delete_from_class" close-on-success="true"/>
+                                </menu-item>
+                            </sub-menu>
+                        </toolbar>
+                    </column>
+                </columns>
+                <toolbar>
+                    <button label="Добавить ученика" disable-on-empty-model="false">
+                        <show-modal page-id="add_student" submit-operation-id="create"
+                                    submit-label="Принять" modal-size="sm">
+                            <params>
+                                <query-param name="id" value="0" datasource="student1"/>
+                            </params>
+                        </show-modal>
+                    </button>
+                </toolbar>
+            </table>
+        </region>
+    </regions>
+</page>
